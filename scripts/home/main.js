@@ -699,11 +699,19 @@
         backgroundDiv.style.width = "100%";
         backgroundDiv.style.height = "100vh";
         backgroundDiv.style.zIndex = "1";
-        //backgroundDiv.style.backgroundColor = "#c1c1c1";
         backgroundDiv.style.display = "flex";
         backgroundDiv.style.flexDirection = "row";
         backgroundDiv.style.justifyContent = "space-between";
         backgroundDiv.style.alignItems = "end";
+
+        // Create performance player div
+        const performancePlayer = document.createElement("div");
+        performancePlayer.style.width = "100%";
+        performancePlayer.style.height = "10vh";
+        performancePlayer.style.display = "flex";
+        performancePlayer.style.flexDirection = "row";
+        performancePlayer.style.justifyContent = "space-between";
+        performancePlayer.style.alignItems = "center";
 
         // Create performance specifics div
         const performanceSpecifics = document.createElement("div");
@@ -724,7 +732,7 @@
         titleElement.style.padding = "0";
         titleElement.style.fontSize = "3em";
         titleElement.style.fontFamily = "sans-serif";
-        
+        titleElement.style.opacity = "calc(60%)";
 
         // Create data element
         const dataElement = document.createElement("p");
@@ -735,10 +743,19 @@
         dataElement.style.fontSize = "1.5em";
         dataElement.style.fontFamily = "sans-serif";
 
+        // Create play button
+        const playButton = document.createElement("img");
+        playButton.src = "https://cdn.jsdelivr.net/gh/daveee00/export_blender/play-btn.svg";
+        playButton.style.height = "100%";
+        playButton.style.paddingRight = "32px";
+        playButton.style.paddingBottom = "32px";
+
         // Append elements
         performanceSpecifics.appendChild(titleElement);
         performanceSpecifics.appendChild(dataElement);
-        backgroundDiv.appendChild(performanceSpecifics);
+        performancePlayer.appendChild(performanceSpecifics);
+        performancePlayer.appendChild(playButton);
+        backgroundDiv.appendChild(performancePlayer);
         document.body.appendChild(backgroundDiv);
 
         // Hide UI elements

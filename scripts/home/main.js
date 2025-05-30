@@ -16,14 +16,26 @@
     }, 300);
   }
   function initWebflowViewer() {
+    // Force scroll to top immediately when the page loads
+    window.scrollTo(0, 0);
+    
     let camera, scene, renderer;
     let container, clock;
-    let lastScrollY = window.scrollY;
+    let lastScrollY = 0; // Reset lastScrollY to 0
     let isScrollingEnabled = false;
     let modelsOriginalPositions = [];
     const loadedModels = [];
     const rotationSpeed = 0.5;
     let loadedModelCount = 0;
+
+    // Reset any existing scroll position
+    if (window.history && window.history.scrollRestoration) {
+      window.history.scrollRestoration = 'manual';
+    }
+
+    // Ensure we're at the top
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
 
     //–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
@@ -91,18 +103,18 @@
     ]
 
     const data_luogo = [
+      "00.00.2020, Paris",
+      "00.00.2020, Bagkok",
+      "00.00.2020, undefined",
+      "00.00.2020, Australia",
+      "00.00.2020, Roma",
+      "00.00.2020, Rimini",
+      "00.00.2020, Berlin",
+      "00.00.2020, not defined",
       "00.00.2020, NYC",
-      "00.00.2020, Rome",
-      "00.00.2020, biringhello",
-      "00.00.2020, pantanedo",
-      "00.00.2020, parigi",
+      "00.00.2020, not definied",
       "00.00.2020, seoul",
-      "00.00.2020, patagonia",
-      "00.00.2020, chicago",
-      "00.00.2020, bucarets",
-      "00.00.2020, monica",
-      "00.00.2020, sofia",
-      "00.00.2020, giovanna",
+      "00.00.2020, not defined",
     ];
 
 
@@ -133,7 +145,7 @@
             const model = gltf.scene;
             model.scale.set(10, 10, 10);
             const baseY = -index * 3;
-            model.position.set(0, baseY, 0);
+            model.position.set(0, baseY, -8);
             model.userData.baseY = baseY;
             model.userData.offset = index * 0.3;
             model.userData.originalIndex = index;
@@ -483,6 +495,9 @@
     //–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
     function init() {
+      // Force scroll to top again during initialization
+      window.scrollTo(0, 0);
+      
       if (!document.getElementById("threejs-container")) {
         container = document.createElement("div");
         container.id = "threejs-container";
@@ -593,7 +608,7 @@
         (gltf) => {
           const modelClone = gltf.scene;
           modelClone.scale.set(10, 10, 10);
-          modelClone.position.set(0, 0, 0);
+          modelClone.position.set(0, 1, -8);
           
           // Set initial rotation to match the main scene
           modelClone.rotation.set(
@@ -686,19 +701,20 @@
         backgroundDiv.style.zIndex = "1";
         //backgroundDiv.style.backgroundColor = "#c1c1c1";
         backgroundDiv.style.display = "flex";
-        backgroundDiv.style.flexDirection = "column";
-        backgroundDiv.style.justifyContent = "flex-end";
-        backgroundDiv.style.alignItems = "left";
+        backgroundDiv.style.flexDirection = "row";
+        backgroundDiv.style.justifyContent = "space-between";
+        backgroundDiv.style.alignItems = "end";
 
         // Create performance specifics div
         const performanceSpecifics = document.createElement("div");
         performanceSpecifics.id = "performance-specifics";
         performanceSpecifics.style.display = "flex";
         performanceSpecifics.style.flexDirection = "column";
+        performanceSpecifics.style.gap = "8px";
         performanceSpecifics.style.margin = "0";
         performanceSpecifics.style.paddingLeft = "32px";
         performanceSpecifics.style.Color = "white";
-        performanceSpecifics.style.paddingBottom = "32px";
+        performanceSpecifics.style.paddingBottom = "64px";
 
         // Create title element
         const titleElement = document.createElement("h2");
@@ -706,7 +722,9 @@
         titleElement.style.color = "white";
         titleElement.style.margin = "0";
         titleElement.style.padding = "0";
-        titleElement.style.fontSize = "60px";
+        titleElement.style.fontSize = "3em";
+        titleElement.style.fontFamily = "sans-serif";
+        
 
         // Create data element
         const dataElement = document.createElement("p");
@@ -714,7 +732,8 @@
         dataElement.style.color = "white";
         dataElement.style.margin = "0";
         dataElement.style.padding = "0";
-        dataElement.style.fontSize = "32px";
+        dataElement.style.fontSize = "1.5em";
+        dataElement.style.fontFamily = "sans-serif";
 
         // Append elements
         performanceSpecifics.appendChild(titleElement);

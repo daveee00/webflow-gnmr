@@ -57,21 +57,6 @@
       "/performances/teller",
       "/performances/tekno-birrette",
     ];
-    // Writing backgrounds array - matching the order of pageLinks
-    const writingBackgrounds = [
-      "/images/titles-homepage/clubDerVisionere_writing_background.png",
-      "/images/titles-homepage/elsewhere_writing_background.png",
-      "/images/titles-homepage/endovena_writing_background.png",
-      "/images/titles-homepage/forTheCause_writing_background.png",
-      "/images/titles-homepage/goa_writing_background.png",
-      "/images/titles-homepage/haudio_writing_background.png",
-      "/images/titles-homepage/hor_writing_background.png",
-      "/images/titles-homepage/lesEnfants_writing_background.png",
-      "/images/titles-homepage/lotradio_writing_background.png",
-      "/images/titles-homepage/radioPirate_writing_background.png",
-      "/images/titles-homepage/teller_writing_background.png",
-      "/images/titles-homepage/teknoBirrette_writing_background.png",
-    ];
     // backgrounds for active page
     const vinylBackground = [
       "linear-gradient(270deg, #EEDC9A, #F5EEC0, #D6BB7D)",
@@ -87,6 +72,40 @@
       "linear-gradient(270deg, #9223A8, #c758e2, #670078)",
       "linear-gradient(270deg, #0C82A1, #3fc8f2, #00475a)",
     ];
+
+    //titoli-performance 
+
+    const title_performance = [
+      "CLUB DER VISIONERE",
+      "ELSEWHERE",
+      "VENA",
+      "FOR THE CAUSE",
+      "GOA",
+      "HAUDIO",
+      "HOR",
+      "LES ENFANTS",
+      "THE LOT RADIO",
+      "RADIO PIRATE",
+      "TELLER",
+      "TECKNO BIRRETTE",
+    ]
+
+    const data_luogo = [
+      "00.00.2020, NYC",
+      "00.00.2020, Rome",
+      "00.00.2020, biringhello",
+      "00.00.2020, pantanedo",
+      "00.00.2020, parigi",
+      "00.00.2020, seoul",
+      "00.00.2020, patagonia",
+      "00.00.2020, chicago",
+      "00.00.2020, bucarets",
+      "00.00.2020, monica",
+      "00.00.2020, sofia",
+      "00.00.2020, giovanna",
+    ];
+
+
     // Add raycaster for click detection
     const raycaster = new THREE.Raycaster();
     const mouse = new THREE.Vector2();
@@ -227,11 +246,27 @@
       pageActive.style.zIndex = "3";
       pageActive.style.background = "none";
       const closeBtn = document.createElement("button");
-      closeBtn.textContent = "close";
+      const closeIcon = document.createElement("img");
+      closeIcon.src = "https://cdn.jsdelivr.net/gh/daveee00/export_blender/close-button.svg";
+      closeIcon.style.width = "24px";
+      closeIcon.style.height = "24px";
+      closeBtn.appendChild(closeIcon);
       closeBtn.id = "close";
       closeBtn.style.position = "fixed";
       closeBtn.style.top = "0";
       closeBtn.style.left = "0";
+      closeBtn.style.background = "none";
+      closeBtn.style.border = "none";
+      closeBtn.style.cursor = "pointer";
+      closeBtn.style.padding = "32px";
+      closeBtn.style.opacity = "0.5";
+      closeBtn.style.transition = "opacity 300ms ease-out";
+      closeBtn.addEventListener("mouseover", () => {
+        closeBtn.style.opacity = "1";
+      });
+      closeBtn.addEventListener("mouseout", () => {
+        closeBtn.style.opacity = "0.5";
+      });
       pageActive.appendChild(closeBtn);
       stickyWrapper.appendChild(pageActive);
       closeBtn.addEventListener("click", handleClose);
@@ -366,6 +401,19 @@
       removeModelSelectedCanvas();
       isModelClicked = false;
 
+      // Remove background div and its contents
+      const backgroundDiv = document.getElementById("model-background");
+      if (backgroundDiv) {
+        backgroundDiv.remove();
+      }
+
+      // Show UI elements
+      const uiElements = document.querySelectorAll('.ui-elements');
+      uiElements.forEach(element => {
+        element.style.opacity = '1';
+        element.style.pointerEvents = 'auto';
+      });
+
       // Enable scrolling
       document.body.style.overflow = "auto";
 
@@ -449,62 +497,6 @@
         container = document.getElementById("threejs-container");
       }
 
-      // Add scrolling writing background
-      const writingContainer = document.createElement("div");
-      writingContainer.id = "writing-container";
-      writingContainer.style.position = "fixed";
-      writingContainer.style.top = "0";
-      writingContainer.style.left = "0";
-      writingContainer.style.width = "100%";
-      writingContainer.style.height = "100vh";
-      writingContainer.style.zIndex = "0";
-      writingContainer.style.overflow = "hidden";
-      writingContainer.style.pointerEvents = "none";
-      writingContainer.style.display = "none"; // Initially hidden
-
-      // Create a wrapper for the images
-      const imageWrapper = document.createElement("div");
-      imageWrapper.style.position = "absolute";
-      imageWrapper.style.top = "50%";
-      imageWrapper.style.left = "50%";
-      imageWrapper.style.transform = "translate(-50%, -50%)";
-      imageWrapper.style.display = "flex";
-      imageWrapper.style.animation = "scrollWriting 20s linear infinite";
-      imageWrapper.style.whiteSpace = "nowrap";
-      imageWrapper.style.width = "300%"; // Make it wider to ensure full coverage
-
-      // Create two sets of images for seamless looping
-      for (let set = 0; set < 2; set++) {
-        for (let i = 0; i < 6; i++) {
-          const writingImage = document.createElement("img");
-          writingImage.src = "/images/teller_writing_background.png";
-          writingImage.style.opacity = "0.3";
-          writingImage.style.height = "auto";
-          writingImage.style.width = "auto";
-          writingImage.style.maxHeight = "80vh";
-          writingImage.style.marginRight = "40px";
-          writingImage.style.display = "inline-block";
-          imageWrapper.appendChild(writingImage);
-        }
-      }
-
-      writingContainer.appendChild(imageWrapper);
-      document.body.appendChild(writingContainer);
-
-      // Add the animation keyframes
-      const style = document.createElement("style");
-      style.textContent = `
-        @keyframes scrollWriting {
-          0% {
-            transform: translate(-50%, -50%);
-          }
-          100% {
-            transform: translate(-150%, -50%);
-          }
-        }
-      `;
-      document.head.appendChild(style);
-
       const width = container.clientWidth;
       const height = container.clientHeight;
       camera = new THREE.PerspectiveCamera(35, width / height, 0.25, 200);
@@ -537,70 +529,6 @@
       renderer.domElement.addEventListener("click", onModelClick);
       window.addEventListener("mousemove", onMouseMove);
       checkContainerPosition();
-    }
-
-    //–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-
-    function createWritingAnimation(backgroundImage) {
-      // Remove any existing writing container first
-      const existingContainer = document.getElementById("writing-container");
-      if (existingContainer) {
-        existingContainer.remove();
-      }
-
-      // Create writing animation container
-      const writingContainer = document.createElement("div");
-      writingContainer.id = "writing-container";
-      writingContainer.style.position = "fixed";
-      writingContainer.style.top = "0";
-      writingContainer.style.left = "0";
-      writingContainer.style.width = "100%";
-      writingContainer.style.height = "100vh";
-      writingContainer.style.zIndex = "0";
-      writingContainer.style.overflow = "hidden";
-      writingContainer.style.pointerEvents = "none";
-      writingContainer.style.display = "flex";
-      writingContainer.style.alignItems = "center";
-      writingContainer.style.justifyContent = "center";
-
-      // Create a wrapper for the images
-      const imageWrapper = document.createElement("div");
-      imageWrapper.style.position = "relative";
-      imageWrapper.style.display = "flex";
-      imageWrapper.style.animation = "scrollWriting 20s linear infinite";
-      imageWrapper.style.whiteSpace = "nowrap";
-      imageWrapper.style.width = "300%";
-
-      // Create two sets of images for seamless looping
-      for (let set = 0; set < 2; set++) {
-        for (let i = 0; i < 6; i++) {
-          const writingImage = document.createElement("img");
-          writingImage.src = backgroundImage;
-          writingImage.style.opacity = "0.3";
-          writingImage.style.height = "auto";
-          writingImage.style.width = "auto";
-          writingImage.style.maxHeight = "80vh";
-          writingImage.style.display = "inline-block";
-          imageWrapper.appendChild(writingImage);
-        }
-      }
-
-      writingContainer.appendChild(imageWrapper);
-      document.body.appendChild(writingContainer);
-
-      // Add the animation keyframes
-      const style = document.createElement("style");
-      style.textContent = `
-        @keyframes scrollWriting {
-          0% {
-            transform: translateX(0);
-          }
-          100% {
-            transform: translateX(-66.666%);
-          }
-        }
-      `;
-      document.head.appendChild(style);
     }
 
     //–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
@@ -745,7 +673,61 @@
         while (clickedModel.parent && !loadedModels.includes(clickedModel)) {
           clickedModel = clickedModel.parent;
         }
-        const clickedIndex = loadedModels.indexOf(clickedModel);
+        const clickedIndex = clickedModel.userData.originalIndex;
+
+        // Create background div
+        const backgroundDiv = document.createElement("div");
+        backgroundDiv.id = "model-background";
+        backgroundDiv.style.position = "fixed";
+        backgroundDiv.style.top = "0";
+        backgroundDiv.style.left = "0";
+        backgroundDiv.style.width = "100%";
+        backgroundDiv.style.height = "100vh";
+        backgroundDiv.style.zIndex = "1";
+        //backgroundDiv.style.backgroundColor = "#c1c1c1";
+        backgroundDiv.style.display = "flex";
+        backgroundDiv.style.flexDirection = "column";
+        backgroundDiv.style.justifyContent = "flex-end";
+        backgroundDiv.style.alignItems = "left";
+
+        // Create performance specifics div
+        const performanceSpecifics = document.createElement("div");
+        performanceSpecifics.id = "performance-specifics";
+        performanceSpecifics.style.display = "flex";
+        performanceSpecifics.style.flexDirection = "column";
+        performanceSpecifics.style.margin = "0";
+        performanceSpecifics.style.paddingLeft = "32px";
+        performanceSpecifics.style.Color = "white";
+        performanceSpecifics.style.paddingBottom = "32px";
+
+        // Create title element
+        const titleElement = document.createElement("h2");
+        titleElement.textContent = title_performance[clickedIndex];
+        titleElement.style.color = "white";
+        titleElement.style.margin = "0";
+        titleElement.style.padding = "0";
+        titleElement.style.fontSize = "60px";
+
+        // Create data element
+        const dataElement = document.createElement("p");
+        dataElement.textContent = data_luogo[clickedIndex];
+        dataElement.style.color = "white";
+        dataElement.style.margin = "0";
+        dataElement.style.padding = "0";
+        dataElement.style.fontSize = "32px";
+
+        // Append elements
+        performanceSpecifics.appendChild(titleElement);
+        performanceSpecifics.appendChild(dataElement);
+        backgroundDiv.appendChild(performanceSpecifics);
+        document.body.appendChild(backgroundDiv);
+
+        // Hide UI elements
+        const uiElements = document.querySelectorAll('.ui-elements');
+        uiElements.forEach(element => {
+          element.style.opacity = '0';
+          element.style.pointerEvents = 'none';
+        });
 
         // Disable scrolling
         document.body.style.overflow = "hidden";
@@ -756,17 +738,12 @@
           mainCanvas.style.display = "none";
         }
 
-        // Create writing animation for the clicked model
-        createWritingAnimation(
-          writingBackgrounds[clickedModel.userData.originalIndex]
-        );
-
         // Create the modelSelected canvas
         createModelSelectedCanvas(clickedModel);
 
         storeModelStates();
         createActivePage();
-        createNavigationButton(clickedModel.userData.originalIndex);
+        createNavigationButton(clickedIndex);
         gsap.to(clickedModel.position, {
           x: 0,
           y: 0,
